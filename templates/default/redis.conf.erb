@@ -540,6 +540,29 @@ client-output-buffer-limit normal <%= node["redis"]["client_output_buffer_limit"
 client-output-buffer-limit slave <%= node["redis"]["client_output_buffer_limit"]["slave"] %>
 client-output-buffer-limit pubsub <%= node["redis"]["client_output_buffer_limit"]["pubsub"] %>
 
+# Redis calls an internal function to perform many background tasks, like
+# closing connections of clients in timeot, purging expired keys that are
+# never requested, and so forth.
+#
+# Not all tasks are perforemd with the same frequency, but Redis checks for
+# tasks to perform accordingly to the specified "hz" value.
+#
+# By default "hz" is set to 10. Raising the value will use more CPU when
+# Redis is idle, but at the same time will make Redis more responsive when
+# there are many keys expiring at the same time, and timeouts may be
+# handled with more precision.
+#
+# The range is between 1 and 500, however a value over 100 is usually not
+# a good idea. Most users should use the default of 10 and raise this up to
+# 100 only in environments where very low latency is required.
+hz <%= node["redis"]["hz"] %>
+
+# When a child rewrites the AOF file, if the following option is enabled
+# the file will be fsync-ed every 32 MB of data generated. This is useful
+# in order to commit the file to the disk more incrementally and avoid
+# big latency spikes.
+aof-rewrite-incremental-fsync <%= node["redis"]["aof_rewrite_incremental_fsync"] %>
+
 ################################## INCLUDES ###################################
 
 # Include one or more other config files here.  This is useful if you

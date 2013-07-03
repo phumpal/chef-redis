@@ -56,4 +56,6 @@ default["redis"]["client_output_buffer_limit"]  = {
   "slave"  => "256mb 64mb 60",
   "pubsub" => "32mb 8mb 60"
 }
-default["redis"]["include_config_files"]        = []
+default["redis"]["hz"]							   = 10
+default["redis"]["aof_rewrite_incremental_fsync"]  = "yes"
+default["redis"]["include_config_files"]           = []
